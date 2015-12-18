@@ -7,9 +7,10 @@ BASE_URL = "http://"
 
 app = Flask(__name__)
 
-app.route('/', "GET")
+@app.route('/', methods=["GET"])
 def serve_file():
     '''Serves the file to be shared.'''
+    
     pass
 
 def get_free_port_num():
