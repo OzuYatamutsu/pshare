@@ -12,7 +12,7 @@ INIT_SHARE_MSG = "Your file is now accessible at thess URLs: "
 BASE_URL = "http://"
 
 app = Flask(__name__)
-file_path = ""
+file_name = ""
 file_dir = ""
 
 @app.route('/', methods=["GET"])
@@ -23,7 +23,7 @@ def err_path():
 def serve_file(filename):
     '''Serves the file to be shared.'''
 
-    return send_from_directory(file_dir, file_path)
+    return send_from_directory(file_dir, file_name)
 
 def validate_args():
     '''Validates the correct number of arguments and whether they point to accessible files.'''
@@ -62,12 +62,12 @@ if __name__ == "__main__":
         exit(-1)
 
     port = get_free_port_num()
-    file_path = argv[1]
-    file_dir = PATH_DIV.join(file_path.split(PATH_DIV)[:-1])
+    file_name = argv[1].split(PATH_DIV)[-1]
+    file_dir = PATH_DIV.join(argv[1].split(PATH_DIV)[:-1])
     print(INIT_SHARE_MSG)
 
     # TODO: Detect local and public IP address
-    print(BASE_URL + "localhost:" + str(port) + "/")
+    print(BASE_URL + "localhost:" + str(port) + "/" + file_name)
 
     # Start Flask app
     app.run(port=port) 
