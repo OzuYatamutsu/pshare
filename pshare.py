@@ -68,6 +68,14 @@ def get_free_port_num():
     sock.close()
     return port
 
+def get_all_net_address():
+    '''Gets all networking addresses that we are listening on.'''
+
+    addresses = ["localhost", "127.0.0.1"]
+    # TODO
+
+    return addresses
+
 if __name__ == "__main__":
     # Validate arguments
     if not validate_args():
@@ -80,8 +88,8 @@ if __name__ == "__main__":
     max_downloads = argv[2] if len(argv) == 3 else 1
     print(INIT_SHARE_MSG)
 
-    # TODO: Detect local and public IP address
-    print(BASE_URL + "localhost:" + str(port) + "/" + file_name)
+    for address in get_all_net_address():
+        print(BASE_URL + address + ':' + str(port) + "/" + file_name)
 
     # Start Flask app
     app.run(port=port) 
