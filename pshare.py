@@ -1,6 +1,8 @@
 from socket import socket, AF_INET, SOCK_STREAM
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from sys import argv
+
+PATH_DIV = '/'
 
 # Output strings
 ERR_NUM_ARGS = "Error: Please specify a file to share."
@@ -10,12 +12,14 @@ INIT_SHARE_MSG = "Your file is now accessible at thess URLs: "
 BASE_URL = "http://"
 
 app = Flask(__name__)
+file_path = ""
+file_dir = ""
 
 @app.route('/', methods=["GET"])
 def serve_file():
     '''Serves the file to be shared.'''
-    
-    pass
+
+    return send_from_directory(file_dir, file_path)
 
 def validate_args():
     '''Validates the correct number of arguments and whether they point to accessible files.'''
@@ -54,6 +58,8 @@ if __name__ == "__main__":
         exit(-1)
 
     port = get_free_port_num()
+    file_path = argv[1]
+    file_dir = PATH_DIV.join(file_path.split(PATH_DIV)[:-1])
     print(INIT_SHARE_MSG)
 
     # TODO: Detect local and public IP address
