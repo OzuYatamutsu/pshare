@@ -15,6 +15,10 @@ app = Flask(__name__)
 file_path = ""
 file_dir = ""
 
+@app.route('/', methods=["GET"])
+def err_path():
+    return "Incorrect filename specified."
+
 @app.route('/<path:filename>', methods=["GET"])
 def serve_file(filename):
     '''Serves the file to be shared.'''
