@@ -1,7 +1,11 @@
 from socket import socket, AF_INET, SOCK_STREAM
 from flask import Flask, request
+from sys import argv
 
 # Output strings
+ERR_NUM_ARGS = "Error: Please specify a file to share."
+ERR_FILE_NOT_ACCESSIBLE = "Error: The file specified does not exist or is not readable."
+ERR_ARG_FORMAT = "Format: python3 pshare.py <file_path>"
 INIT_SHARE_MSG = "Your file is now accessible at thess URLs: "
 BASE_URL = "http://"
 
@@ -13,6 +17,27 @@ def serve_file():
     
     pass
 
+def validate_args():
+    '''Validates the correct number of arguments and whether they point to accessible files.'''
+
+    if len(argv) != 2:
+        print(ERR_NUM_ARGS)
+        return False
+    if not file_exists(argv[1]):
+        print(ERR_FILE_NOT_ACCESSIBLE)
+        return False
+    return True
+
+def file_exists(path):
+    '''Verifies that a file exists and is readable at the given path.'''
+    try:
+        f = open(path, "rb")
+    except:
+        return False
+    
+    f.close()
+    return True
+
 def get_free_port_num():
     '''Gets a free port number to listen on.'''
     
@@ -23,10 +48,16 @@ def get_free_port_num():
     return port
 
 if __name__ == "__main__":
-    # Start Flask app
+    # Validate arguments
+    if not validate_args():
+        print(ERR_ARG_FORMAT)
+        exit(-1)
+
     port = get_free_port_num()
-    app.run(port=port)
-    
     print(INIT_SHARE_MSG)
+
     # TODO: Detect local and public IP address
-    print(BASE_URL + "localhost:" + port)
+    print(BASE_URL + "localhost:" + str(port) + "/")
+
+    # Start Flask app
+    app.run(port=port) 
