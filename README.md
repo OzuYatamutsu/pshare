@@ -27,3 +27,20 @@ pshare <file_path> [max_transfers]
 **`file_path`** The path to the file you want to share. The file must exist and be readable by the user running pshare.
 
 **`max_transfers`** (optional) The maximum number of downloads of your file that you want to permit before you stop sharing it. The default is `1`. A value of `0` will permit an unlimited number of downloads.
+
+## Installation
+pshare requires `python` (2 or 3)`, as well as the Flask web framework and the socket library.
+
+#### Python 2
+```
+sudo apt-get install -y python python-pip
+sudo pip install flask socket
+```
+
+#### Python 3
+```
+sudo apt-get install -y python3 python3-pip
+sudo pip3 install flask
+```
+
+
