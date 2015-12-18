@@ -15,8 +15,8 @@ app = Flask(__name__)
 file_path = ""
 file_dir = ""
 
-@app.route('/', methods=["GET"])
-def serve_file():
+@app.route('/<path:filename>', methods=["GET"])
+def serve_file(filename):
     '''Serves the file to be shared.'''
 
     return send_from_directory(file_dir, file_path)
