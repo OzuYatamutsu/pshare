@@ -43,4 +43,10 @@ sudo apt-get install -y python3 python3-pip
 sudo pip3 install flask
 ```
 
+pshare can then be run in the local directory by running `./pshare`.
+To install pshare globally, move it into your bin path:
+```
+sudo mv pshare.py /usr/local/bin/
+```
 
+Then, simply run `pshare`, specifying the arguments detailed above.
