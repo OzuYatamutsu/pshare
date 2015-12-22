@@ -3,8 +3,7 @@
 from socket import socket, AF_INET, SOCK_STREAM
 from flask import Flask, request, send_from_directory
 from sys import argv
-
-PATH_DIV = '/'
+from os import path
 
 # Output strings
 ERR_NUM_ARGS = "Error: Please specify a file to share."
@@ -83,8 +82,8 @@ if __name__ == "__main__":
         exit(-1)
 
     port = get_free_port_num()
-    file_name = argv[1].split(PATH_DIV)[-1]
-    file_dir = PATH_DIV.join(argv[1].split(PATH_DIV)[:-1])
+    file_name = argv[1].split(path.sep)[-1]
+    file_dir = path.sep.join(argv[1].split(path.sep)[:-1])
     max_downloads = argv[2] if len(argv) == 3 else 1
     print(INIT_SHARE_MSG)
 
