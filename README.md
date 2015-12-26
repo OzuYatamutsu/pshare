@@ -7,9 +7,9 @@ Your file is now accessible at these URLs:
 http://localhost:45013/file.7z
 http://192.168.1.103:45013/file.7z
 http://128.16.227.56:45013/file.7z
- * Running on http://127.0.0.1:45013/ (Press CTRL+C to quit)
+ * Running on http://0.0.0.0:45013/ (Press CTRL+C to quit)
 128.16.227.23 - - [18/Dec/2015 14:34:06] "GET /file.7z HTTP/1.1" 200 -
-Transfer complete. Shutting down...
+Transfers complete! Shutting down server...
 
 jinhai@dev.steakscorp.org:~$ 
 ```

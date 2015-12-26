@@ -13,6 +13,7 @@ ERR_ARG_LESS_THAN_ZERO = "Errpr: The maximum number of transfers specified must 
 ERR_ARG_NOT_A_NUM = "Error: The maximum number of transfers specified must be a number."
 ERR_ARG_FORMAT = "Format: python3 pshare.py <file_path> [max_transfers]"
 ERR_TOO_MANY_DOWNLOADS = "Error: Too many downloads. Ask your sharer to allow more!"
+INFO_SHUTTING_DOWN = "Transfers complete! Shutting down server..."
 INIT_SHARE_MSG = "Your file is now accessible at these URLs: "
 BASE_URL = "http://"
 
@@ -42,7 +43,7 @@ def serve_file(filename):
         client_table.append(client)
         num_downloads += 1
         # TODO: Trigger checking of client socket on timeout thread
-        # is_ip_still_there(client)
+        # socket_poll(client)
     return send_from_directory(file_dir, file_name)
 
 def validate_args():
@@ -100,6 +101,16 @@ def get_all_net_address():
         pass
     return addresses
 
+def socket_poll(ip):
+    '''Controls what happens if a client socket closes.'''
+
+    global client_table
+    if is_ip_still_there(ip): return
+    client_table.remove(ip)
+    if len(client_table) == 0 and num_downloads >= max_downloads:
+        print(INFO_SHUTTING_DOWN)
+        pass # TODO: Shut down Flask
+    
 def is_ip_still_there(ip):
     '''Checks if we still have an open socket to a given ip address.'''
 
