@@ -19,6 +19,7 @@ BASE_URL = "http://"
 app = Flask(__name__)
 file_name = ""
 file_dir = ""
+num_downloads = 0
 max_downloads = 0
 client_table = []
 
@@ -31,11 +32,15 @@ def serve_file(filename):
     '''Serves the file to be shared.'''
    
     global client_table
+    global num_downloads
+    global max_downloads
+
     client = request.remote_addr
     if max_downloads > 0 and client not in client_table:
-        if len(client_table) + 1 > max_downloads:
+        if num_downloads + 1 > max_downloads:
             return ERR_TOO_MANY_DOWNLOADS
         client_table.append(client)
+        num_downloads += 1
         # TODO: Trigger checking of client socket on timeout thread
         # is_ip_still_there(client)
     return send_from_directory(file_dir, file_name)
