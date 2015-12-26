@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, gethostname, gethostbyname_ex, AF_INET, SOCK_STREAM
 from flask import Flask, request, send_from_directory
 from sys import argv
 from os import path
@@ -71,7 +71,8 @@ def get_all_net_address():
     '''Gets all networking addresses that we are listening on.'''
 
     addresses = ["localhost", "127.0.0.1"]
-    # TODO
+    addresses.insert(1, gethostname())
+    addresses += gethostbyname_ex(gethostname())[2]
 
     return addresses
 
