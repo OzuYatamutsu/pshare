@@ -12,6 +12,7 @@ ERR_FILE_NOT_ACCESSIBLE = "Error: The file specified does not exist or is not re
 ERR_ARG_LESS_THAN_ZERO = "Errpr: The maximum number of transfers specified must be at least 0."
 ERR_ARG_NOT_A_NUM = "Error: The maximum number of transfers specified must be a number."
 ERR_ARG_FORMAT = "Format: python3 pshare.py <file_path> [max_transfers]"
+ERR_TOO_MANY_DOWNLOADS = "Error: Too many downloads. Ask your sharer to allow more!"
 INIT_SHARE_MSG = "Your file is now accessible at these URLs: "
 BASE_URL = "http://"
 
@@ -33,7 +34,7 @@ def serve_file(filename):
     client = request.remote_addr
     if max_downloads > 0 and client not in client_table:
         if len(client_table) + 1 > max_downloads:
-            return "Error: Too many downloads. Ask your sharer to allow more!"
+            return ERR_TOO_MANY_DOWNLOADS
         client_table.append(client)
         # TODO: Trigger checking of client socket on timeout thread
         # is_ip_still_there(client)
