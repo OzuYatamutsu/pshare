@@ -50,3 +50,7 @@ sudo mv pshare.py /usr/local/bin/
 ```
 
 Then, simply run `pshare`, specifying the arguments detailed above.
+
+## `ipgetter`
+
+pshare makes use of the `ipgetter` library, maintained by phoemur@gmail.com.
