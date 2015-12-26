@@ -106,4 +106,4 @@ if __name__ == "__main__":
         print(BASE_URL + address + ':' + str(port) + "/" + file_name)
 
     # Start Flask app
-    app.run(port=port) 
+    app.run(host="0.0.0.0", port=port) 
