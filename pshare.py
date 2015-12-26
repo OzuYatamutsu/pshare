@@ -81,6 +81,8 @@ def get_all_net_address():
     addresses += gethostbyname_ex(gethostname())[2]
     # Get public IP address; TODO: timeout
     try:
+        # DEBUG: Oh, the fun in debugging without internet
+        raise ValueError
         public_ip = myip()
         if public_ip not in addresses: addresses.append(public_ip)
     except Error:
