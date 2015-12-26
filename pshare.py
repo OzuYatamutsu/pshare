@@ -90,6 +90,17 @@ def get_all_net_address():
         pass
     return addresses
 
+def is_ip_still_there(ip):
+    '''Checks if we still have an open socket to a given ip address.'''
+
+    netstat_filter_table = [
+        sock for sock in net_connections() \
+        if ip in sock.raddr \
+        and port in sock.raddr \
+    ]
+
+    return len(netstat_filter_table) != 0
+
 if __name__ == "__main__":
     # Validate arguments
     if not validate_args():
