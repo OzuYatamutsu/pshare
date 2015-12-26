@@ -2,6 +2,7 @@
 
 from socket import socket, gethostname, gethostbyname_ex, AF_INET, SOCK_STREAM
 from flask import Flask, request, send_from_directory
+from ipgetter import myip
 from sys import argv
 from os import path
 
@@ -73,7 +74,9 @@ def get_all_net_address():
     addresses = ["localhost", "127.0.0.1"]
     addresses.insert(1, gethostname())
     addresses += gethostbyname_ex(gethostname())[2]
-
+    # Get public IP address
+    public_ip = myip()
+    if public_ip not in addresses: addresses.append(public_ip)
     return addresses
 
 if __name__ == "__main__":
