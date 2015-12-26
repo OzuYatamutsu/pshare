@@ -12,7 +12,7 @@ ERR_FILE_NOT_ACCESSIBLE = "Error: The file specified does not exist or is not re
 ERR_ARG_LESS_THAN_ZERO = "Errpr: The maximum number of transfers specified must be at least 0."
 ERR_ARG_NOT_A_NUM = "Error: The maximum number of transfers specified must be a number."
 ERR_ARG_FORMAT = "Format: python3 pshare.py <file_path> [max_transfers]"
-INIT_SHARE_MSG = "Your file is now accessible at thess URLs: "
+INIT_SHARE_MSG = "Your file is now accessible at these URLs: "
 BASE_URL = "http://"
 
 app = Flask(__name__)
@@ -74,7 +74,7 @@ def get_all_net_address():
     addresses = ["localhost", "127.0.0.1"]
     addresses.insert(1, gethostname())
     addresses += gethostbyname_ex(gethostname())[2]
-    # Get public IP address
+    # Get public IP address; TODO: timeout
     public_ip = myip()
     if public_ip not in addresses: addresses.append(public_ip)
     return addresses
