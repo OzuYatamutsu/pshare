@@ -5,6 +5,7 @@ Need to share a file with someone real quick?
 jinhai@dev.steakscorp.org:~$ pshare /path/to/file/file.7z
 Your file is now accessible at these URLs:
 http://localhost:45013/file.7z
+http://dev.steakscorp.org:45013/file.7z
 http://192.168.1.103:45013/file.7z
 http://128.16.227.56:45013/file.7z
  * Running on http://0.0.0.0:45013/ (Press CTRL+C to quit)
