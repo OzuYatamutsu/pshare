@@ -19,6 +19,7 @@ app = Flask(__name__)
 file_name = ""
 file_dir = ""
 max_downloads = 0
+client_table = []
 
 @app.route('/', methods=["GET"])
 def err_path():
@@ -27,7 +28,11 @@ def err_path():
 @app.route('/<path:filename>', methods=["GET"])
 def serve_file(filename):
     '''Serves the file to be shared.'''
-
+   
+    global client_table
+    client = request.remote_addr
+    if max_downloads > 0 and client not in client_table:
+        client_table.append(client)
     return send_from_directory(file_dir, file_name)
 
 def validate_args():
