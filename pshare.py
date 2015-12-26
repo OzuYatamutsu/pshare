@@ -75,8 +75,12 @@ def get_all_net_address():
     addresses.insert(1, gethostname())
     addresses += gethostbyname_ex(gethostname())[2]
     # Get public IP address; TODO: timeout
-    public_ip = myip()
-    if public_ip not in addresses: addresses.append(public_ip)
+    try:
+        public_ip = myip()
+        if public_ip not in addresses: addresses.append(public_ip)
+    except Error:
+        # Swallow it
+        pass
     return addresses
 
 if __name__ == "__main__":
