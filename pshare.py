@@ -32,7 +32,11 @@ def serve_file(filename):
     global client_table
     client = request.remote_addr
     if max_downloads > 0 and client not in client_table:
+        if len(client_table) + 1 > max_downloads:
+            return "Error: Too many downloads. Ask your sharer to allow more!"
         client_table.append(client)
+        # TODO: Trigger checking of client socket on timeout thread
+        # is_ip_still_there(client)
     return send_from_directory(file_dir, file_name)
 
 def validate_args():
