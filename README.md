@@ -35,24 +35,19 @@ pshare requires `python` (2 or 3)`, as well as the Flask web framework and the s
 #### Python 2
 ```
 sudo apt-get install -y python python-pip
-sudo pip install flask socket
+sudo pip install flask socket ipgetter
 ```
 
 #### Python 3
 ```
 sudo apt-get install -y python3 python3-pip
-sudo pip3 install flask
+sudo pip3 install flask ipgetter
 ```
 
 pshare can then be run in the local directory by running `./pshare`.
 To install pshare globally, move it into your bin path:
 ```
 sudo mv pshare.py /usr/local/bin/
-sudo mv ipgetter.py /usr/local/bin/
 ```
 
 Then, simply run `pshare`, specifying the arguments detailed above.
-
-## `ipgetter`
-
-pshare makes use of the `ipgetter` library, maintained by phoemur@gmail.com.
