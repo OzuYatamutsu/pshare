@@ -2,9 +2,13 @@
 
 from socket import socket, gethostname, gethostbyname_ex, AF_INET, SOCK_STREAM
 from flask import Flask, request, send_from_directory
-from urllib import HTTPConnection
+from sys import argv, version_info
+# Python 2/3 compatibility
+if version_info >= (3, 0):
+    from http.client import HTTPConnection
+else:
+    from httplib import HTTPConnection
 from ipgetter import myip
-from sys import argv
 from os import path
 
 # Output strings
