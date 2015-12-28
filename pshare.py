@@ -3,6 +3,7 @@
 from socket import socket, gethostname, gethostbyname_ex, AF_INET, SOCK_STREAM
 from flask import Flask, request, send_from_directory
 from sys import argv, version_info
+from threading import Timer
 # Python 2/3 compatibility
 if version_info >= (3, 0):
     from http.client import HTTPConnection
@@ -10,7 +11,6 @@ else:
     from httplib import HTTPConnection
 from ipgetter import myip
 from os import path
-
 # Output strings
 ERR_NUM_ARGS = "Error: Please specify a file to share."
 ERR_FILE_NOT_ACCESSIBLE = "Error: The file specified does not exist or is not readable."
@@ -47,8 +47,8 @@ def serve_file(filename):
             return ERR_TOO_MANY_DOWNLOADS
         client_table.append(client)
         num_downloads += 1
-        # TODO: Trigger checking of client socket on timeout thread
-        # socket_poll(client)
+        # Trigger checking of client socket on timeout thread
+        Timer(5.0, socket_poll, [client]).start()
     return send_from_directory(file_dir, file_name)
 
 def validate_args():
@@ -108,7 +108,10 @@ def socket_poll(ip):
     '''Controls what happens if a client socket closes.'''
 
     global client_table
-    if is_ip_still_there(ip): return
+    if is_ip_still_there(ip):
+        # Check again later
+        Timer(5.0, socket_poll, [ip]).start()
+        return
     client_table.remove(ip)
     if len(client_table) == 0 and num_downloads >= max_downloads:
         print(INFO_SHUTTING_DOWN)
