@@ -2,7 +2,9 @@
 
 from socket import socket, gethostname, gethostbyname_ex, AF_INET, SOCK_STREAM
 from flask import Flask, request, send_from_directory
+from psutil import net_connections
 from sys import argv, version_info
+from random import getrandbits
 from threading import Timer
 # Python 2/3 compatibility
 if version_info >= (3, 0):
@@ -10,6 +12,7 @@ if version_info >= (3, 0):
 else:
     from httplib import HTTPConnection
 from ipgetter import myip
+from requests import post
 from os import path
 # Output strings
 ERR_NUM_ARGS = "Error: Please specify a file to share."
@@ -28,6 +31,7 @@ file_dir = ""
 num_downloads = 0
 max_downloads = 0
 client_table = []
+kill_code = str(getrandbits(64))
 
 @app.route('/', methods=["GET"])
 def err_path():
@@ -50,6 +54,21 @@ def serve_file(filename):
         # Trigger checking of client socket on timeout thread
         Timer(5.0, socket_poll, [client]).start()
     return send_from_directory(file_dir, file_name)
+
+@app.route('/' + kill_code, methods=["POST"])
+def shutdown_flask():
+    '''Stops the Flask server.'''
+
+    func = request.environ.get("werkzeug.server.shutdown")
+    func()
+
+def trigger_shutdown():
+    '''Sends a GET with the generated kill_code to trigger a shutdown of Flask.'''
+
+    global port
+    global kill_code
+
+    post("http://localhost:" + str(port) + "/" + kill_code)
 
 def validate_args():
     '''Validates the correct number of arguments and whether they point to accessible files.'''
@@ -115,7 +134,7 @@ def socket_poll(ip):
     client_table.remove(ip)
     if len(client_table) == 0 and num_downloads >= max_downloads:
         print(INFO_SHUTTING_DOWN)
-        shutdown_flask()
+        trigger_shutdown()
 
 def is_ip_still_there(ip):
     '''Checks if we still have an open socket to a given ip address.'''
@@ -127,12 +146,6 @@ def is_ip_still_there(ip):
     ]
 
     return len(netstat_filter_table) != 0
-
-def shutdown_flask():
-    '''Stops the Flask server.'''
-
-    func = request.environ.get("werkzeug.server.shutdown")
-    func()
 
 def have_internet():
     '''Checks if we have a connection to the internet.'''
@@ -153,7 +166,7 @@ if __name__ == "__main__":
     port = get_free_port_num()
     file_name = argv[1].split(path.sep)[-1]
     file_dir = path.sep.join(argv[1].split(path.sep)[:-1])
-    max_downloads = argv[2] if len(argv) == 3 else 1
+    max_downloads = int(argv[2]) if len(argv) == 3 else 1
     print(INIT_SHARE_MSG)
 
     for address in get_all_net_address():
