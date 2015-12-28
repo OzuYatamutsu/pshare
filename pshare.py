@@ -95,7 +95,7 @@ def get_all_net_address():
         try:        
             public_ip = myip()
             if public_ip not in addresses: addresses.append(public_ip)
-        except ValueError: # DEBUG: Catch all errors
+        except Exception:
             # Swallow it
             pass
     return addresses
