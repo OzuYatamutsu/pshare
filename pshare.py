@@ -52,7 +52,7 @@ def serve_file(filename):
         client_table.append(client)
         num_downloads += 1
         # Trigger checking of client socket on timeout thread
-        Timer(5.0, socket_poll, [client]).start()
+        Timer(0.5, socket_poll, [client]).start()
     return send_from_directory(file_dir, file_name)
 
 @app.route('/' + kill_code, methods=["POST"])
@@ -129,7 +129,7 @@ def socket_poll(ip):
     global client_table
     if is_ip_still_there(ip):
         # Check again later
-        Timer(5.0, socket_poll, [ip]).start()
+        Timer(0.5, socket_poll, [ip]).start()
         return
     client_table.remove(ip)
     if len(client_table) == 0 and num_downloads >= max_downloads:
