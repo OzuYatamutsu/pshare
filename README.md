@@ -48,6 +48,7 @@ pshare can then be run in the local directory by running `./pshare`.
 To install pshare globally, move it into your bin path:
 ```
 sudo mv pshare.py /usr/local/bin/
+sudo mv ipgetter.py /usr/local/bin/
 ```
 
 Then, simply run `pshare`, specifying the arguments detailed above.
