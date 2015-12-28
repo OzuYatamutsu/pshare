@@ -109,8 +109,8 @@ def socket_poll(ip):
     client_table.remove(ip)
     if len(client_table) == 0 and num_downloads >= max_downloads:
         print(INFO_SHUTTING_DOWN)
-        pass # TODO: Shut down Flask
-    
+        shutdown_flask()
+
 def is_ip_still_there(ip):
     '''Checks if we still have an open socket to a given ip address.'''
 
@@ -121,6 +121,11 @@ def is_ip_still_there(ip):
     ]
 
     return len(netstat_filter_table) != 0
+
+def shutdown_flask():
+    '''Stops the Flask server.'''
+    func = request.environ.get("werkzeug.server.shutdown")
+    func()
 
 if __name__ == "__main__":
     # Validate arguments
