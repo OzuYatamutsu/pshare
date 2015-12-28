@@ -129,7 +129,7 @@ class IPgetter(object):
                               "Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Firefox/24.0")]
 
         try:
-            url = opener.open(server)
+            url = opener.open(server, timeout=2)
             content = url.read()
 
             # Didn't want to import chardet. Prefered to stick to stdlib
@@ -144,7 +144,7 @@ class IPgetter(object):
                 content)
             myip = m.group(0)
             return myip if len(myip) > 0 else ''
-        except Exception:
+        except Exception as e:
             return ''
         finally:
             if url:
