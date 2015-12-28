@@ -2,6 +2,7 @@
 
 from socket import socket, gethostname, gethostbyname_ex, AF_INET, SOCK_STREAM
 from flask import Flask, request, send_from_directory
+from urllib import HTTPConnection
 from ipgetter import myip
 from sys import argv
 from os import path
@@ -90,15 +91,13 @@ def get_all_net_address():
     addresses = ["localhost", "127.0.0.1"]
     addresses.insert(1, gethostname())
     addresses += gethostbyname_ex(gethostname())[2]
-    # Get public IP address; TODO: timeout
-    try:
-        # DEBUG: Oh, the fun in debugging without internet
-        raise ValueError
-        public_ip = myip()
-        if public_ip not in addresses: addresses.append(public_ip)
-    except ValueError: # DEBUG: Catch all errors
-        # Swallow it
-        pass
+    if have_internet():
+        try:        
+            public_ip = myip()
+            if public_ip not in addresses: addresses.append(public_ip)
+        except ValueError: # DEBUG: Catch all errors
+            # Swallow it
+            pass
     return addresses
 
 def socket_poll(ip):
@@ -124,8 +123,19 @@ def is_ip_still_there(ip):
 
 def shutdown_flask():
     '''Stops the Flask server.'''
+
     func = request.environ.get("werkzeug.server.shutdown")
     func()
+
+def have_internet():
+    '''Checks if we have a connection to the internet.'''
+
+    conn = HTTPConnection("www.google.com")
+    try:
+        conn.request("HEAD", "/")
+        return True
+    except:
+        return False
 
 if __name__ == "__main__":
     # Validate arguments
