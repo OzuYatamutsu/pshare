@@ -11,7 +11,7 @@ if version_info >= (3, 0):
     from http.client import HTTPConnection
 else:
     from httplib import HTTPConnection
-from ipgetter import myip
+from ipgetter2 import ipgetter1 as ipgetter
 from requests import post
 from os import path
 # Output strings
@@ -116,7 +116,7 @@ def get_all_net_address():
     addresses += gethostbyname_ex(gethostname())[2]
     if have_internet():
         try:        
-            public_ip = myip()
+            public_ip = ipgetter.myip()
             if public_ip not in addresses: addresses.append(public_ip)
         except Exception:
             # Swallow it
